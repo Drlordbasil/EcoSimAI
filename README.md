@@ -24,8 +24,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 Contributions to EcoSimAI are welcome! Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests.
 
 ## Authors
-- [Your Name] - Initial work
-
+- Drlordbasil - Initial work
+- codepilot and assistants on chatgpt to assist
 ## Acknowledgments
 - Hat tip to anyone whose code was used
 - Inspiration
