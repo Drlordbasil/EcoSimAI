@@ -10,9 +10,9 @@ import math
 class Constants:
     EMPTY, PREY, PREDATOR, PLANT, WATER, FOOD, GOLDILOCKS, DEAD_ZONE = range(8)
     ENERGY_THRESHOLD, REPRODUCE_ENERGY, INITIAL_ENERGY = 100, 50, 25
-    GRID_SIZE, NN_INPUT_SIZE, NN_OUTPUT_SIZE, TRAINING_EPOCHS = 20, 24, 6, 50
-    MUTATION_CHANCE, DEATH_AFTER_REPRODUCTION_CHANCE, GENERATIONS = 0.2, 0.1, 150
-    MAX_THREADS, CELL_SIZE = 10000, 50
+    GRID_SIZE, NN_INPUT_SIZE, NN_OUTPUT_SIZE, TRAINING_EPOCHS = 30, 24, 6, 50
+    MUTATION_CHANCE, DEATH_AFTER_REPRODUCTION_CHANCE, GENERATIONS = 0.2, 0.1, 500
+    MAX_THREADS, CELL_SIZE = 10000, 30
     SIDE_PANEL_WIDTH = 200
     WINDOW_SIZE = (GRID_SIZE * CELL_SIZE + SIDE_PANEL_WIDTH, GRID_SIZE * CELL_SIZE)
     FONT_SIZE, EYE_RANGE = 12, 5
@@ -103,6 +103,19 @@ class Entity:
         if new_grid[new_i][new_j].type == Constants.EMPTY:
             new_grid[new_i][new_j] = Entity(self.type, self.energy, self.age, self.brain, self.adaptability_factor)
             new_grid[i][j] = Entity(Constants.EMPTY)
+        elif new_grid[new_i][new_j].type == Constants.FOOD:
+            self.energy += 10
+            new_grid[new_i][new_j] = Entity(self.type, self.energy, self.age, self.brain, self.adaptability_factor)
+            new_grid[i][j] = Entity(Constants.EMPTY)
+        elif new_grid[new_i][new_j].type == Constants.PREDATOR and self.type == Constants.PREY:
+            self.energy -= 10
+            new_grid[new_i][new_j] = Entity(self.type, self.energy, self.age, self.brain, self.adaptability_factor)
+            new_grid[i][j] = Entity(Constants.EMPTY)
+        elif new_grid[new_i][new_j].type == Constants.PREY and self.type == Constants.PREDATOR:
+            self.energy += 10
+            new_grid[new_i][new_j] = Entity(self.type, self.energy, self.age, self.brain, self.adaptability_factor)
+            new_grid[i][j] = Entity(Constants.EMPTY)
+            
         else:
             new_grid[i][j] = self
 
@@ -162,7 +175,7 @@ def initialize_grid():
         for j in range(Constants.GRID_SIZE):
             # Randomly choose an entity type with a bias towards EMPTY for initial sparsity
             entity_type = np.random.choice([Constants.EMPTY, Constants.PREY, Constants.PREDATOR, Constants.PLANT], 
-                                           p=[0.7, 0.1, 0.1, 0.1])  # Adjust probabilities as needed
+                                           p=[0.1, 0.4, 0.4, 0.1])  # Adjust probabilities as needed
             if (i, j) in Constants.WATER_LOCATIONS:
                 entity_type = Constants.WATER
             row.append(Entity(entity_type))
@@ -189,7 +202,7 @@ def run_simulation():
     font = pygame.font.SysFont('arial', Constants.FONT_SIZE)
 
     running, grid = True, initialize_grid()
-    generation_time = 90
+    generation_time = 30
     generation_timer = 0
     while running:
         for event in pygame.event.get():
