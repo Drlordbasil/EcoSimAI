@@ -1,4 +1,5 @@
 # EcoSimAI
+![image](https://github.com/Drlordbasil/EcoSimAI/assets/126736516/4358f531-e91c-4d9b-be7b-938d63568677)
 
 EcoSimAI is a Python-based ecosystem simulation incorporating artificial intelligence and neural networks to model interactions between various entities like prey, predators, and plants. The simulation runs on a grid where each entity behaves according to AI-driven decisions, evolving over time.
 
